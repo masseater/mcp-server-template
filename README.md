@@ -8,6 +8,8 @@ A production-ready template for building Model Context Protocol (MCP) servers wi
 - ✅ **Type-Safe**: Full TypeScript support with strict mode enabled
 - ✅ **Extensible Architecture**: Base classes for easy tool creation
 - ✅ **Production-Ready**: Logging, error handling, and configuration management
+- ✅ **CI/CD**: GitHub Actions for automated testing and npm publishing
+- ✅ **Automated Dependency Updates**: Dependabot configuration with auto-merge
 - ✅ **Developer-Friendly**: Hot reload, ESLint, and comprehensive tooling
 - ✅ **Sample Tools**: Echo and Ping tools as examples
 
@@ -406,6 +408,67 @@ Follow [Semantic Versioning](https://semver.org/):
 - **MAJOR** (1.0.0 → 2.0.0): Breaking changes
 - **MINOR** (1.0.0 → 1.1.0): New features (backward compatible)
 - **PATCH** (1.0.0 → 1.0.1): Bug fixes (backward compatible)
+
+## Dependency Management
+
+This template includes automated dependency management with Dependabot.
+
+### Dependabot Configuration
+
+The `.github/dependabot.yml` configuration:
+
+1. **npm Dependencies** (Weekly updates on Mondays):
+   - Minor/patch updates are grouped together
+   - Major updates are separated with `breaking-change` label
+   - Automatically creates PRs for dependency updates
+
+2. **GitHub Actions** (Weekly updates on Mondays):
+   - Keeps workflow actions up to date
+   - Groups all action updates together
+
+3. **Auto-merge** (Optional):
+   - Minor and patch updates auto-merge after CI passes
+   - Major updates require manual review
+   - Configured via `.github/workflows/dependabot-auto-merge.yml`
+
+### How It Works
+
+1. **Automated PRs**: Dependabot creates PRs every Monday at 9:00 AM (Asia/Tokyo)
+2. **CI Validation**: All PRs run through CI workflow (lint, test, build)
+3. **Auto-merge** (Optional): Minor/patch updates merge automatically after CI passes
+4. **Manual Review**: Major updates are labeled `breaking-change` and require manual review
+
+### Customization
+
+Edit `.github/dependabot.yml` to customize:
+
+```yaml
+schedule:
+  interval: "weekly"  # Can be: daily, weekly, monthly
+  day: "monday"       # Day of the week
+  time: "09:00"       # Time of day
+  timezone: "Asia/Tokyo"
+```
+
+Update reviewers/assignees:
+
+```yaml
+reviewers:
+  - "your-github-username"
+assignees:
+  - "your-github-username"
+```
+
+### Disable Auto-merge
+
+If you prefer manual merging, delete `.github/workflows/dependabot-auto-merge.yml`:
+
+```bash
+rm .github/workflows/dependabot-auto-merge.yml
+git add .github/workflows/dependabot-auto-merge.yml
+git commit -m "chore: disable dependabot auto-merge"
+git push
+```
 
 ## Contributing
 
