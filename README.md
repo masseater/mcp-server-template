@@ -418,29 +418,35 @@ This template includes automated dependency management with Dependabot.
 The `.github/dependabot.yml` configuration:
 
 1. **npm Dependencies** (Weekly updates on Mondays):
-   - Minor/patch updates are grouped together
-   - Major updates are separated with `breaking-change` label
-   - Automatically creates PRs for dependency updates
+   - **All updates grouped into a single PR** (major, minor, patch)
+   - Creates one consolidated PR per week for npm dependencies
+   - Reduces PR noise while keeping dependencies up-to-date
 
 2. **GitHub Actions** (Weekly updates on Mondays):
    - Keeps workflow actions up to date
    - Groups all action updates together
 
 3. **Auto-merge** (Optional):
-   - Minor and patch updates auto-merge after CI passes
-   - Major updates require manual review
+   - Minor and patch updates can auto-merge after CI passes
+   - Major updates require manual review (with warning comment)
    - Configured via `.github/workflows/dependabot-auto-merge.yml`
 
 ### How It Works
 
 1. **Automated PRs**: Dependabot creates PRs every Monday at 9:00 AM (Asia/Tokyo)
+   - 1 PR for all npm dependencies (major + minor + patch)
+   - 1 PR for GitHub Actions updates
 2. **CI Validation**: All PRs run through CI workflow (lint, test, build)
-3. **Auto-merge** (Optional): Minor/patch updates merge automatically after CI passes
-4. **Manual Review**: Major updates are labeled `breaking-change` and require manual review
+3. **Auto-merge** (Optional):
+   - Minor/patch updates merge automatically after CI passes
+   - Major updates get a warning comment and require manual review
+4. **Review Changes**: Check the PR diff and test results before merging major updates
 
 ### Customization
 
 Edit `.github/dependabot.yml` to customize:
+
+**Change update schedule:**
 
 ```yaml
 schedule:
@@ -450,13 +456,28 @@ schedule:
   timezone: "Asia/Tokyo"
 ```
 
-Update reviewers/assignees:
+**Update reviewers/assignees:**
 
 ```yaml
 reviewers:
   - "your-github-username"
 assignees:
   - "your-github-username"
+```
+
+**Separate major/minor/patch updates (if preferred):**
+
+If you want major updates in separate PRs, modify the `groups` section:
+
+```yaml
+groups:
+  dependencies:
+    patterns:
+      - "*"
+    update-types:
+      - "minor"
+      - "patch"
+  # Add another package-ecosystem entry for major updates
 ```
 
 ### Disable Auto-merge
