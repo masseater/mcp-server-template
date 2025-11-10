@@ -24,6 +24,7 @@ export class EchoTool extends BaseTool<EchoArgs> {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   async execute(args: EchoArgs): Promise<MCPToolResponse<{ message: string }>> {
     return {
       success: true,

@@ -20,6 +20,7 @@ export class PingTool extends BaseTool<PingArgs> {
     return z.object({});
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   async execute(_args: PingArgs): Promise<MCPToolResponse<{ status: string; timestamp: string }>> {
     return {
       success: true,

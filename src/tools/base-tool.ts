@@ -17,6 +17,7 @@ export type ToolDefinition<TArgs = Record<string, unknown>> = {
   handler: ToolHandler<TArgs>;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export type ToolContext = {
   // Add your context properties here
   // Example: apiClient: ApiClient;

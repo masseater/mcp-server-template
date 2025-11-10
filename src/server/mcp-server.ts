@@ -27,7 +27,7 @@ export class MCPServerImpl {
   /**
    * Initialize the MCP server with configuration
    */
-  async initialize(config: ServerConfig): Promise<void> {
+  initialize(config: ServerConfig): void {
     this.config = config;
 
     // Setup tool registry and handlers
