@@ -316,6 +316,97 @@ Log levels: `error`, `warn`, `info`, `debug`
 2. Add to context or import directly in tools
 3. Use RawTool base class for tools needing optimization
 
+## Publishing to npm
+
+This template includes GitHub Actions workflows for automated publishing to npm.
+
+### Setup
+
+1. **Create npm account and get access token**:
+   - Go to https://www.npmjs.com/
+   - Create an account or sign in
+   - Generate an access token: Settings → Access Tokens → Generate New Token (Automation)
+
+2. **Add npm token to GitHub secrets**:
+   - Go to your GitHub repository → Settings → Secrets and variables → Actions
+   - Click "New repository secret"
+   - Name: `NPM_TOKEN`
+   - Value: Your npm access token
+
+3. **Update package.json**:
+   ```json
+   {
+     "name": "your-package-name",
+     "version": "0.1.0",
+     "author": "Your Name",
+     "repository": {
+       "type": "git",
+       "url": "https://github.com/yourusername/your-repo.git"
+     }
+   }
+   ```
+
+### Publishing a New Version
+
+The template includes two GitHub Actions workflows:
+
+#### 1. CI Workflow (`.github/workflows/ci.yml`)
+
+Automatically runs on every push and pull request:
+- Runs linter (ESLint)
+- Runs type checking
+- Runs tests
+- Runs knip (unused code detection)
+- Builds the project
+
+#### 2. Publish Workflow (`.github/workflows/publish.yml`)
+
+Manual workflow for publishing to npm:
+
+1. Go to your GitHub repository → Actions tab
+2. Select "Publish to npm" workflow
+3. Click "Run workflow"
+4. Enter the version number (e.g., `1.0.1`, `1.1.0`, `2.0.0`)
+5. Click "Run workflow"
+
+The workflow will:
+- ✅ Run all tests
+- ✅ Run linter
+- ✅ Run type check
+- ✅ Update version in package.json
+- ✅ Build the project
+- ✅ Publish to npm
+- ✅ Create git tag and commit
+- ✅ Push tag to GitHub
+
+### Manual Publishing (Alternative)
+
+You can also publish manually:
+
+```bash
+# Login to npm
+npm login
+
+# Update version
+npm version patch  # or minor, major
+
+# Build
+pnpm run build
+
+# Publish
+npm publish
+
+# Push git tag
+git push origin main --tags
+```
+
+### Version Guidelines
+
+Follow [Semantic Versioning](https://semver.org/):
+- **MAJOR** (1.0.0 → 2.0.0): Breaking changes
+- **MINOR** (1.0.0 → 1.1.0): New features (backward compatible)
+- **PATCH** (1.0.0 → 1.0.1): Bug fixes (backward compatible)
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
